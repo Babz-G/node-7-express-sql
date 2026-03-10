@@ -53,6 +53,12 @@ async function getOneAnimalById(id) {
 }
 
 // 4. getNewestAnimal()
+async function getNewestAnimal() {
+  const result = await db.query(
+    "SELECT * FROM animals ORDER BY id DESC LIMIT 1"
+  );
+  return result.rows[0];
+}
 
 // 5. 🌟 BONUS CHALLENGE — getAllMammals()
 
@@ -94,6 +100,10 @@ app.get("/get-one-animal-by-id/:id", async (req, res) => {
 });
 
 // 4. GET /get-newest-animal
+app.get("/get-newest-animal", async (req, res) => {
+  const animal = await getNewestAnimal();
+  res.json(animal);
+});
 
 // 5. 🌟 BONUS CHALLENGE — GET /get-all-mammals
 
