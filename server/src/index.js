@@ -47,6 +47,10 @@ async function getOneAnimalByName(name) {
 }
 
 // 3. getOneAnimalById(id)
+async function getOneAnimalById(id) {
+  const result = await db.query("SELECT * FROM animals WHERE id = $1", [id]);
+  return result.rows[0];
+}
 
 // 4. getNewestAnimal()
 
@@ -83,6 +87,11 @@ app.get("/get-one-animal-by-name/:name", async (req, res) => {
 });
 
 // 3. GET /get-one-animal-by-id/:id
+app.get("/get-one-animal-by-id/:id", async (req, res) => {
+  let id = req.params.id;
+  const animal = await getOneAnimalById(id);
+  res.json(animal);
+});
 
 // 4. GET /get-newest-animal
 
