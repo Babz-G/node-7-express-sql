@@ -77,6 +77,9 @@ async function getAnimalsByCategory(category) {
 }
 
 // 7. deleteOneAnimal(id)
+async function deleteOneAnimal(Id) {
+  await db.query("DELETE FROM animals WHERE id = $1", [Id]);
+}
 
 // 8. addOneAnimal(name, category, can_fly, lives_in)
 async function addOneAnimal(name, category, can_fly, lives_in) {
@@ -92,6 +95,12 @@ async function updateOneAnimalName(id, newName) {
 }
 
 // 10. updateOneAnimalCategory(id, newCategory)
+async function updateOneAnimalCategory(id, newCategory) {
+  await db.query("UPDATE animals SET category = $1 WHERE id = $2", [
+    newCategory,
+    id,
+  ]);
+}
 
 // 11. 🌟 BONUS CHALLENGE — addManyAnimals(animals)
 
@@ -140,9 +149,14 @@ app.get("/get-animals-by-category/:category", async (req, res) => {
 });
 
 // 7. POST /delete-one-animal/:id
+app.post("/delete-one-animal/:id", async (req, res) => {
+  const id = req.params.id;
+  await deleteOneAnimal(id);
+  res.send(`Success! Animal with the id of ${id} was deleted! Yay!`);
+});
 
 // 8. POST /add-one-animal
-app.post("add-one-animal", async (req, res) => {
+app.post("/add-one-animal", async (req, res) => {
   const { name, category, can_fly, lives_in } = req.body;
   await addOneAnimal(name, category, can_fly, lives_in);
   res.send(`Success! ${req.body.name} was added! Yay!`);
@@ -156,5 +170,10 @@ app.post("/update-one-animal-name", async (req, res) => {
 });
 
 // 10. POST /update-one-animal-category
+app.post("/update-one-animal-category", async (req, res) => {
+  const { id, newCategory } = req.body;
+  await updateOneAnimalCategory(id, newCategory);
+  res.send("Success, one animal category was updated!");
+});
 
 // 11. 🌟 BONUS CHALLENGE — POST /add-many-animals
