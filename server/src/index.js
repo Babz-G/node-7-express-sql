@@ -79,8 +79,17 @@ async function getAnimalsByCategory(category) {
 // 7. deleteOneAnimal(id)
 
 // 8. addOneAnimal(name, category, can_fly, lives_in)
+async function addOneAnimal(name, category, can_fly, lives_in) {
+  await db.query(
+    "INSERT INTO animals (name, category, can_fly, lives_in) VALUES ($1, $2, $3, $4)",
+    [name, category, can_fly, lives_in]
+  );
+}
 
 // 9. updateOneAnimalName(id, newName)
+async function updateOneAnimalName(id, newName) {
+  await db.query("UPDATE animals SET name = $1 WHERE id = $2", [newName, id]);
+}
 
 // 10. updateOneAnimalCategory(id, newCategory)
 
@@ -133,8 +142,18 @@ app.get("/get-animals-by-category/:category", async (req, res) => {
 // 7. POST /delete-one-animal/:id
 
 // 8. POST /add-one-animal
+app.post("add-one-animal", async (req, res) => {
+  const { name, category, can_fly, lives_in } = req.body;
+  await addOneAnimal(name, category, can_fly, lives_in);
+  res.send(`Success! ${req.body.name} was added! Yay!`);
+});
 
 // 9. POST /update-one-animal-name
+app.post("/update-one-animal-name", async (req, res) => {
+  const { id, newName } = req.body;
+  await updateOneAnimalName(id, newName);
+  res.send("Success, the animal's name was changed!");
+});
 
 // 10. POST /update-one-animal-category
 
