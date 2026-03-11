@@ -61,8 +61,20 @@ async function getNewestAnimal() {
 }
 
 // 5. 🌟 BONUS CHALLENGE — getAllMammals()
+async function getAllMammals() {
+  const result = await db.query(
+    "SELECT * FROM animals WHERE category = 'mammal'"
+  );
+  return result.rows;
+}
 
 // 6. 🌟 BONUS CHALLENGE — getAnimalsByCategory(category)
+async function getAnimalsByCategory(category) {
+  const result = await db.query("SELECT * FROM animals WHERE category = $1", [
+    category,
+  ]);
+  return result.rows;
+}
 
 // 7. deleteOneAnimal(id)
 
@@ -106,8 +118,17 @@ app.get("/get-newest-animal", async (req, res) => {
 });
 
 // 5. 🌟 BONUS CHALLENGE — GET /get-all-mammals
+app.get("/get-all-mammals", async (req, res) => {
+  const animals = await getAllMammals();
+  res.json(animals);
+});
 
 // 6. 🌟 BONUS CHALLENGE — GET /get-animals-by-category/:category
+app.get("/get-animals-by-category/:category", async (req, res) => {
+  const { category } = req.params;
+  const animals = await getAnimalsByCategory(category);
+  res.json(animals);
+});
 
 // 7. POST /delete-one-animal/:id
 
