@@ -103,7 +103,16 @@ async function updateOneAnimalCategory(id, newCategory) {
 }
 
 // 11. 🌟 BONUS CHALLENGE — addManyAnimals(animals)
-
+async function addManyAnimals(animals) {
+  for (const animal of animals) {
+    await addOneAnimal(
+      animal.name,
+      animal.category,
+      animal.can_fly,
+      animal.lives_in
+    );
+  }
+}
 // ---------------------------------
 // API Endpoints
 // ---------------------------------
@@ -177,3 +186,8 @@ app.post("/update-one-animal-category", async (req, res) => {
 });
 
 // 11. 🌟 BONUS CHALLENGE — POST /add-many-animals
+app.post("/add-many-animals", async (req, res) => {
+  const animals = req.body;
+  await addManyAnimals(animals);
+  res.send("Success, all animals were added!");
+});
