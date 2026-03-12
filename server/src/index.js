@@ -104,9 +104,12 @@ async function updateOneAnimalCategory(id, newCategory) {
 
 // 11. 🌟 BONUS CHALLENGE — addManyAnimals(animals)
 async function addManyAnimals(animals) {
+  // takes in an array of animal objects
   for (const animal of animals) {
+    // loops through each animal in the array one at a time
     await addOneAnimal(
-      animal.name,
+      // calls xisting addOneAnimal function for each animal
+      animal.name, // pulls the following info from the current animal object...
       animal.category,
       animal.can_fly,
       animal.lives_in
